@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "wrangler pages dev dist",
-    "deploy": "npm run build && wrangler pages deploy dist"
+    "preview": "vite preview",
+    "deploy": "wrangler pages deploy dist --project-name=flux-chat-cf"
   },
   "dependencies": {
     "lucide-react": "^0.454.0",
