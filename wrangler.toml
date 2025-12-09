@@ -1,4 +1,4 @@
-name = "flux-chat-ui"
+name = "flux-chat-cf"
 compatibility_date = "2025-12-09"
 pages_build_output_dir = "dist"
 
