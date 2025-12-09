@@ -3,5 +3,5 @@ compatibility_date = "2025-12-09"
 pages_build_output_dir = "dist"
 
 [vars]
-DEFAULT_API_URL = "https://fluxes.zeabur.app"
-DEFAULT_API_KEY = "1"
+DEFAULT_API_URL = "https://fluxes.zeabur.app/v1/chat/completions"
+DEFAULT_API_KEY = "kinai"
