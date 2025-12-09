@@ -9,7 +9,7 @@
 [![React](https://img.shields.io/badge/React-18.3-61dafb?logo=react)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.6-3178c6?logo=typescript)](https://www.typescriptlang.org/)
 
-[在线演示](https://flux-chat-ui.pages.dev) | [快速开始](#-快速开始) | [部署指南](#-部署到-cloudflare-pages)
+[在线演示](https://flux-chat-cf.pages.dev) | [快速开始](#-快速开始) | [部署指南](#-cloudflare-pages-部署配置)
 
 </div>
 
@@ -92,42 +92,64 @@ npm run deploy
 
 ---
 
-## 📦 部署到 Cloudflare Pages
+## 📦 Cloudflare Pages 部署配置
 
-### 前置要求
-- Node.js 18+ 
-- npm 或 yarn
-- Cloudflare 账号 (免费)
+### 重要：正确的构建设置
+
+在 Cloudflare Pages 项目设置中，请使用以下配置:
+
+| 设置项 | 值 |
+|----------|------|
+| **框架预设** | `None` 或 `Vite` |
+| **构建命令** | `npm run build` |
+| **构建输出目录** | `dist` |
+| **根目录** | `/` (默认) |
+
+### ⚠️ 重要提示
+
+**不要设置部署命令!** Cloudflare Pages 会在构建完成后自动部署。
+
+如果你看到这个错误:
+```
+✗ [ERROR] It looks like you've run a Workers-specific command in a Pages project.
+```
+
+**解决方法:**
+1. 进入 Cloudflare Dashboard
+2. 选择你的 Pages 项目
+3. **Settings** → **Builds & deployments**
+4. 点击 **Configure build settings**
+5. **删除** 或 **清空** "Deploy command" 字段
+6. 保存设置
 
 ### 详细步骤
 
-#### 1. 获取 Cloudflare API Token
+#### 1. 连接 GitHub 仓库
 
 1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com/)
-2. 进入 "我的个人资料" → "API 令牌"
-3. 点击 "创建令牌" → 选择 "编辑 Cloudflare Workers" 模板
-4. 保存生成的 API Token
+2. 进入 **Pages** → **创建项目**
+3. 选择 **连接到 Git**
+4. 授权 GitHub 并选择 `kinai9661/flux-chat-cf` 仓库
 
-#### 2. 本地部署
+#### 2. 配置构建设置
 
-```bash
-# 登录 Cloudflare
-npx wrangler login
-
-# 部署项目
-npm run deploy
-
-# 或者直接使用 wrangler
-npx wrangler pages deploy dist --project-name=flux-chat-ui
+```yaml
+项目名称: flux-chat-cf
+生产分支: main
+框架预设: None
+构建命令: npm run build
+构建输出目录: dist
 ```
 
-#### 3. GitHub Actions 自动部署
+**重要**: 不要填写 "部署命令" 字段！
 
-1. Fork 此仓库
-2. 在仓库设置中添加 Secrets:
-   - `CLOUDFLARE_API_TOKEN`: 你的 Cloudflare API Token
-   - `CLOUDFLARE_ACCOUNT_ID`: 你的 Cloudflare Account ID
-3. 推送代码到 `main` 分支即可自动部署
+#### 3. 环境变量(可选)
+
+在 **Settings** → **Environment variables** 中添加:
+
+| 变量名 | 值 |
+|----------|-----|
+| `NODE_VERSION` | `20` |
 
 ---
 
@@ -252,12 +274,11 @@ npm run deploy
 在 `wrangler.toml` 中配置:
 
 ```toml
-name = "flux-chat-ui"
+name = "flux-chat-cf"
 compatibility_date = "2025-12-09"
 pages_build_output_dir = "dist"
 
 [vars]
-# 默认 API 配置
 DEFAULT_API_URL = "https://fluxes.zeabur.app"
 DEFAULT_API_KEY = "1"
 ```
@@ -311,6 +332,9 @@ A: 检查 Cloudflare Pages 项目设置,确保构建输出目录为 `dist`。
 ### Q: 一键部署脚本在 Windows 上无法运行?
 A: 可使用 Git Bash 或 WSL,或选择手动部署方式。
 
+### Q: Cloudflare Pages 部署失败?
+A: 确保 **没有设置部署命令**,只需要设置构建命令 `npm run build` 和输出目录 `dist`。
+
 ---
 
 ## 📄 开源协议
@@ -340,7 +364,7 @@ A: 可使用 Git Bash 或 WSL,或选择手动部署方式。
 
 ## 🔗 相关链接
 
-- [在线演示](https://flux-chat-ui.pages.dev)
+- [在线演示](https://flux-chat-cf.pages.dev)
 - [问题反馈](https://github.com/kinai9661/flux-chat-cf/issues)
 - [Cloudflare 文档](https://developers.cloudflare.com/pages/)
 - [FLUX 模型文档](https://blackforestlabs.ai/)
